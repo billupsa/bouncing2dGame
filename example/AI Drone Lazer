@@ -1,0 +1,19 @@
+public class Lazerscript : MonoBehavior {
+    //may need to replace all Vector with Vector2
+    GameObject target;
+    public float speed;
+    Rigidbody2D lazerRB;
+    void start(){
+        lazerRB = GetComponent<Rigidbody2D>();
+        target = GameObject.FindObjectWithTag("Player");
+        Vector movedir = (target.transform.position - transform.position).normalized * speed;
+        lazerRB.velocity = new Vector(movedir.x,movedir.y);
+        Destroy(this.gameObject, 2); //change to deal damage
+    
+    }
+
+
+
+
+
+}
