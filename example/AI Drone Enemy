@@ -1,0 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine
+//Attach this code to AI Drone Sprite
+public class DroneFollowPlayer : MonoBehavior {
+  public float speed;
+  public float lineofsight;
+  public float firerate = 1f;
+  private float nextfiretime;
+  public float shootingrange;
+  public GameObject lazer;//seperate lazer script
+  public GameObject lazerparent;
+  private Transform player;
+  void start(){
+      player = GameObject.FindGameObjectWithTag("Player").transform;
+  }
+  void update(){
+      float distanceFromPlayer = Vector.Distance(player.position, transform.position);
+      if (distanceFromPlayer < lineofsight && distanceFromPlayer > shootingrange){
+          transform.position = Vector.MoveTowards(this.transform.position, player.position, speed * Time.deltaTime);
+      }
+      else if (distanceFromPlayer <= shootingrange &&  nextfiretime < Time.time){
+          Instantiate(lazer,lazerparent.transform.position, Quaternion.identity);
+          nextfiretime = Time.time + firerate;
+      }
+   public void OnDrawGizmosSelected(){
+      Gizmos.color = Color.red;
+      Gizmos.DrawWireSphere(transform.position, lineofsight);
+      Gizmos.DrawWireSphere(transform.position, shootingrange);
+   
+   }
+  
+  }
+}
